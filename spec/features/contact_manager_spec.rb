@@ -18,4 +18,18 @@ feature 'The one-page contact manager app' do
     expect(page).to have_content "15 Main St"
   end
 
+  scenario 'user can fill in form and create user', js: true do
+    visit '/'
+    fill_in 'first_name', with: 'Andrew'
+    fill_in 'last_name', with: 'Smith'
+    fill_in 'address', with: '15 Pine St'
+    click_on 'Create Person'
+    expect(page).to have_content 'Andrew Smith'
+    expect(page).to have_content '15 Pine St'
+    expect(Person.all).to_not be_empty
+    expect(page).to have_field('first_name', with: '')
+    expect(page).to have_field('last_name', with: '')
+    expect(page).to have_field('address', with: '')
+  end
+
 end
